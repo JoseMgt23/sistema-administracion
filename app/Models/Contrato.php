@@ -16,4 +16,9 @@ class Contrato extends Model
     {
         return $this->belongsTo(Arrendatario::class);
     }
+
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class);
+    }
 }
