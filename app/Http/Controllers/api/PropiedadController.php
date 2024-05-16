@@ -39,7 +39,14 @@ class PropiedadController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $propiedad = Propiedad::fin($id);
+        $propiedad = DB::table('direccion')
+        ->orderBy('descripcion')
+        ->orderBy('tipo')
+        ->orderBy('disponibilidad')
+        ->get();
+
+        return json_encode(['propiedad'=>$propiedad]);
     }
 
     /**
