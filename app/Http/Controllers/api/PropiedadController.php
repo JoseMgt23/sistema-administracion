@@ -25,6 +25,19 @@ class PropiedadController extends Controller
     public function store(Request $request)
     {
         //
+        $validate = Validator::make($request->all(), [
+            'direccion' => ['required', 'max:50', 'unique'],
+            'descripcion' => ['required', 'max:100', 'unique'],
+            'tipo' => ['required', 'max:30', 'unique'],
+            'disponibilidad' => ['required', 'numeric', 'min:1']
+        ]);
+
+        if($validate->fails()){
+            return response()->json([
+                'msg' => 'Se produjo un error en la validacion de la informacion',
+                'statusCode' => 400
+            ]);
+        }
         $propiedades = new Propiedad();
         $propiedades->direccion = $request->direccion;
         $propiedad->descripcion = $request->descripcion;
@@ -40,6 +53,9 @@ class PropiedadController extends Controller
     public function show(string $id)
     {
         $propiedad = Propiedad::fin($id);
+        if (is_null($propiedad)){
+            return abort(404);
+        }
         $propiedad = DB::table('direccion')
         ->orderBy('descripcion')
         ->orderBy('tipo')
