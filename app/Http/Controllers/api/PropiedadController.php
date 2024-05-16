@@ -15,7 +15,8 @@ class PropiedadController extends Controller
      */
     public function index()
     {
-        //
+        $propiedades = Propiedad::all();
+        return view('propiedad.index', ['propiedades' => $propiedades]);
     }
 
     /**
@@ -24,6 +25,13 @@ class PropiedadController extends Controller
     public function store(Request $request)
     {
         //
+        $propiedades = new Propiedad();
+        $propiedades->direccion = $request->direccion;
+        $propiedad->descripcion = $request->descripcion;
+        $propiedad->tipo = $request->tipo;
+        $propiedad->disponibilidad = $request->disponibilidad;
+        $propiedad->save();
+        return json_encode(['propiedad' => $propiedad]);
     }
 
     /**
