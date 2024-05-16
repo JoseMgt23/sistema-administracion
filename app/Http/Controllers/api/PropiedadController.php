@@ -69,6 +69,10 @@ class PropiedadController extends Controller
      */
     public function destroy(string $id)
     {
+        $propiedad = Propiedad::find($id);
+        $propiedad->delete();
+        $propiedades = Propiedad::all();
+        return json_encode(['propiedad'=>$propiedad]);
         
     }
 }
