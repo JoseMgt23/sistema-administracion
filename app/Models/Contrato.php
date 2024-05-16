@@ -11,4 +11,9 @@ class Contrato extends Model
     {
         return $this->belongsTo(Propiedad::class);
     }
+
+    public function arrendatario()
+    {
+        return $this->belongsTo(Arrendatario::class);
+    }
 }
