@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('arrendatarios', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->string('apellido');
+            $table->string('telefono');
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
@@ -20,7 +24,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('arrendatarios');
     }
