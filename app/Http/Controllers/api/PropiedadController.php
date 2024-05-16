@@ -16,7 +16,7 @@ class PropiedadController extends Controller
     public function index()
     {
         $propiedades = Propiedad::all();
-        return view('propiedad.index', ['propiedades' => $propiedades]);
+        return json_encode(['propiedad'=>$propiedad]);
     }
 
     /**
@@ -54,7 +54,14 @@ class PropiedadController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $propiedad = Propiedad::find($id);
+        $propiedades->direccion = $request->direccion;
+        $propiedad->descripcion = $request->descripcion;
+        $propiedad->tipo = $request->tipo;
+        $propiedad->disponibilidad = $request->disponibilidad;
+        $propiedad->save();
+        
+        return json_encode(['propiedad'=>$propiedad]);
     }
 
     /**
@@ -62,6 +69,6 @@ class PropiedadController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
     }
 }
