@@ -18,4 +18,9 @@ class Propiedad extends Model
     public function contratos(){
         return $this->hasMany(Contrato::class);
     }
+
+    public function mantenimientos()
+    {
+        return $this->hasMany(Mantenimiento::class);
+    }
 }
