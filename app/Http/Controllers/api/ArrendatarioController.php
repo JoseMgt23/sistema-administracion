@@ -95,6 +95,11 @@ class ArrendatarioController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $arrendatario = Arrendatario::find($id);
+        if (is_null($arrendatario)) {
+            return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
+        }
+        $arrendatario->delete();
+        return response()->json(['msg' => 'Arrendatario eliminado exitosamente']);
     }
 }
