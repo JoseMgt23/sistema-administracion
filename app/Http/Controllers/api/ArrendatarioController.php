@@ -34,6 +34,15 @@ class ArrendatarioController extends Controller
                 'statusCode' => 400
             ]);
         }
+
+        $arrendatario = new Arrendatario();
+        $arrendatario->nombre = $request->nombre;
+        $arrendatario->apellido = $request->apellido;
+        $arrendatario->telefono = $request->telefono;
+        $arrendatario->email = $request->email;
+        $arrendatario->save();
+
+        return response()->json(['arrendatario' => $arrendatario], 201);
     }
 
     /**
@@ -41,7 +50,11 @@ class ArrendatarioController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $arrendatario = Arrendatario::find($id);
+        if (is_null($arrendatario)) {
+            return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
+        }
+        return response()->json(['arrendatario' => $arrendatario]);
     }
 
     /**
@@ -49,7 +62,32 @@ class ArrendatarioController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $arrendatario = Arrendatario::find($id);
+        if (is_null($arrendatario)) {
+            return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
+        }
+
+        $validate = Validator::make($request->all(), [
+            'nombre' => ['required', 'max:255'],
+            'apellido' => ['required', 'max:255'],
+            'telefono' => ['required', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:arrendatarios,email,' . $id],
+        ]);
+
+        if ($validate->fails()) {
+            return response()->json([
+                'msg' => 'Se produjo un error en la validación de la información',
+                'statusCode' => 400
+            ]);
+        }
+
+        $arrendatario->nombre = $request->nombre;
+        $arrendatario->apellido = $request->apellido;
+        $arrendatario->telefono = $request->telefono;
+        $arrendatario->email = $request->email;
+        $arrendatario->save();
+
+        return response()->json(['arrendatario' => $arrendatario]);
     }
 
     /**
