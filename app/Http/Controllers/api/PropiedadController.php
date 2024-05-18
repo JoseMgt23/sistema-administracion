@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\api;
 
-
 use App\Http\Controllers\Controller;
 use App\Models\Propiedad;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PropiedadController extends Controller
 {
@@ -16,7 +15,7 @@ class PropiedadController extends Controller
     public function index()
     {
         $propiedades = Propiedad::all();
-        return json_encode(['propiedad'=>$propiedad]);
+        return response()->json(['propiedades' => $propiedades]);
     }
 
     /**
@@ -24,27 +23,29 @@ class PropiedadController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $validate = Validator::make($request->all(), [
-            'direccion' => ['required', 'max:50', 'unique'],
-            'descripcion' => ['required', 'max:100', 'unique'],
-            'tipo' => ['required', 'max:30', 'unique'],
-            'disponibilidad' => ['required', 'numeric', 'min:1']
+        $validator = Validator::make($request->all(), [
+            'direccion' => 'required|max:255|unique:propiedades',
+            'descripcion' => 'required',
+            'tipo' => 'required|max:100',
+            'disponibilidad' => 'required|in:disponible,ocupado'
         ]);
 
-        if($validate->fails()){
+        if ($validator->fails()) {
             return response()->json([
-                'msg' => 'Se produjo un error en la validacion de la informacion',
-                'statusCode' => 400
-            ]);
+                'msg' => 'Se produjo un error en la validación de la información',
+                'statusCode' => 400,
+                'errors' => $validator->errors()
+            ], 400);
         }
-        $propiedades = new Propiedad();
-        $propiedades->direccion = $request->direccion;
+
+        $propiedad = new Propiedad();
+        $propiedad->direccion = $request->direccion;
         $propiedad->descripcion = $request->descripcion;
         $propiedad->tipo = $request->tipo;
         $propiedad->disponibilidad = $request->disponibilidad;
         $propiedad->save();
-        return json_encode(['propiedad' => $propiedad]);
+
+        return response()->json(['propiedad' => $propiedad]);
     }
 
     /**
@@ -52,17 +53,12 @@ class PropiedadController extends Controller
      */
     public function show(string $id)
     {
-        $propiedad = Propiedad::fin($id);
-        if (is_null($propiedad)){
-            return abort(404);
+        $propiedad = Propiedad::find($id);
+        if (is_null($propiedad)) {
+            return response()->json(['msg' => 'Propiedad no encontrada'], 404);
         }
-        $propiedad = DB::table('direccion')
-        ->orderBy('descripcion')
-        ->orderBy('tipo')
-        ->orderBy('disponibilidad')
-        ->get();
 
-        return json_encode(['propiedad'=>$propiedad]);
+        return response()->json(['propiedad' => $propiedad]);
     }
 
     /**
@@ -70,14 +66,33 @@ class PropiedadController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validator = Validator::make($request->all(), [
+            'direccion' => 'required|max:255|unique:propiedades,direccion,'.$id,
+            'descripcion' => 'required',
+            'tipo' => 'required|max:100',
+            'disponibilidad' => 'required|in:disponible,ocupado'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'msg' => 'Se produjo un error en la validación de la información',
+                'statusCode' => 400,
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
         $propiedad = Propiedad::find($id);
-        $propiedades->direccion = $request->direccion;
+        if (is_null($propiedad)) {
+            return response()->json(['msg' => 'Propiedad no encontrada'], 404);
+        }
+
+        $propiedad->direccion = $request->direccion;
         $propiedad->descripcion = $request->descripcion;
         $propiedad->tipo = $request->tipo;
         $propiedad->disponibilidad = $request->disponibilidad;
         $propiedad->save();
-        
-        return json_encode(['propiedad'=>$propiedad]);
+
+        return response()->json(['propiedad' => $propiedad]);
     }
 
     /**
@@ -86,9 +101,11 @@ class PropiedadController extends Controller
     public function destroy(string $id)
     {
         $propiedad = Propiedad::find($id);
+        if (is_null($propiedad)) {
+            return response()->json(['msg' => 'Propiedad no encontrada'], 404);
+        }
+
         $propiedad->delete();
-        $propiedades = Propiedad::all();
-        return json_encode(['propiedad'=>$propiedad]);
-        
+        return response()->json(['msg' => 'Propiedad eliminada con éxito']);
     }
 }

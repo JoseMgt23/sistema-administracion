@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Arrendatario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ArrendatarioController extends Controller
 {
@@ -21,18 +23,19 @@ class ArrendatarioController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'nombre' => ['required', 'max:255'],
-            'apellido' => ['required', 'max:255'],
-            'telefono' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:arrendatarios'],
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'telefono' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:arrendatarios',
         ]);
 
-        if ($validate->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'msg' => 'Se produjo un error en la validación de la información',
-                'statusCode' => 400
-            ]);
+                'statusCode' => 400,
+                'errors' => $validator->errors()
+            ], 400);
         }
 
         $arrendatario = new Arrendatario();
@@ -67,18 +70,19 @@ class ArrendatarioController extends Controller
             return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
         }
 
-        $validate = Validator::make($request->all(), [
-            'nombre' => ['required', 'max:255'],
-            'apellido' => ['required', 'max:255'],
-            'telefono' => ['required', 'max:255'],
-            'email' => ['required', 'email', 'max:255', 'unique:arrendatarios,email,' . $id],
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|max:255',
+            'apellido' => 'required|max:255',
+            'telefono' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:arrendatarios,email,' . $id,
         ]);
 
-        if ($validate->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 'msg' => 'Se produjo un error en la validación de la información',
-                'statusCode' => 400
-            ]);
+                'statusCode' => 400,
+                'errors' => $validator->errors()
+            ], 400);
         }
 
         $arrendatario->nombre = $request->nombre;

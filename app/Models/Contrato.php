@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contrato extends Model
 {
+    protected $fillable = [
+        'propiedad_id',
+        'arrendatario_id',
+        'fecha_inicio',
+        'fecha_fin',
+        'renta_mensual'
+    ];
     public function propiedad()
     {
         return $this->belongsTo(Propiedad::class);
