@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ContratoController;
 use App\Http\Controllers\Api\MantenimientoController;
+use App\Http\Controllers\Api\PagoController;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
 {
     return $request->user();
@@ -37,4 +39,10 @@ Route::delete('/mantenimientos/{mantenimiento}', [MantenimientoController::class
 Route::get('/mantenimientos/{mantenimiento}', [MantenimientoController::class, 'show'])->name('mantenimientos.show');
 Route::put('/mantenimientos/{mantenimiento}', [MantenimientoController::class, 'update'])->name('mantenimientos.update');
 
+//Pagos
+Route::post('/pagos', [PagoController::class, 'store'])->name('pagos.store');
+Route::get('/pagos', [PagoController::class, 'index'])->name('pagos.index');
+Route::delete('/pagos/{pago}', [PagoController::class, 'destroy'])->name('pagos.destroy');
+Route::get('/pagos/{pago}', [PagoController::class, 'show'])->name('pagos.show');
+Route::put('/pagos/{pago}', [PagoController::class, 'update'])->name('pagos.update');
 
