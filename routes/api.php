@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\ContratoController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
 {
@@ -21,3 +22,10 @@ Route::get('/arrendatarios', [ArrendatarioController::class, 'index'])->name('ar
 Route::delete('/arrendatarios/{arrendatario}', [ArrendatarioController::class, 'destroy'])->name('arrendatarios.destroy');
 Route::get('/arrendatarios/{arrendatario}', [ArrendatarioController::class, 'show'])->name('arrendatarios.show');
 Route::put('/arrendatarios/{arrendatario}', [ArrendatarioController::class, 'update'])->name('arrendatarios.update');
+
+
+Route::post('/contratos', [ContratoController::class, 'store'])->name('contratos.store');
+Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.index');
+Route::delete('/contratos/{contrato}', [ContratoController::class, 'destroy'])->name('contratos.destroy');
+Route::get('/contratos/{contrato}', [ContratoController::class, 'show'])->name('contratos.show');
+Route::put('/contratos/{contrato}', [ContratoController::class, 'update'])->name('contratos.update');
