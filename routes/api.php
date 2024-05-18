@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ContratoController;
-
+use App\Http\Controllers\Api\MantenimientoController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
 {
     return $request->user();
@@ -29,3 +29,7 @@ Route::get('/contratos', [ContratoController::class, 'index'])->name('contratos.
 Route::delete('/contratos/{contrato}', [ContratoController::class, 'destroy'])->name('contratos.destroy');
 Route::get('/contratos/{contrato}', [ContratoController::class, 'show'])->name('contratos.show');
 Route::put('/contratos/{contrato}', [ContratoController::class, 'update'])->name('contratos.update');
+
+
+
+
