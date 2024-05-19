@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('propiedad_id')->references('id')->on('propiedades')->onDelete('cascade');
             $table->text('descripcion');
             $table->date('fecha');
-            $table->decimal('costo', 10, 2);
+            $table->bigInteger('costo');
             $table->timestamps();
         });
     }

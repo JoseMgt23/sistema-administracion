@@ -24,6 +24,9 @@ class ArrendatarioController extends Controller
     {
         $arrendatario = new Arrendatario();
         $arrendatario->nombre = $request->nombre;
+        $arrendatario->apellido = $request->apellido;
+        $arrendatario->telefono = $request->telefono;
+        $arrendatario->email = $request->email;
         // Agrega aquí el resto de los campos del arrendatario
         $arrendatario->save();
         return response()->json(['arrendatario' => $arrendatario]);

@@ -24,6 +24,10 @@ class MantenimientoController extends Controller
     {
         $mantenimiento = new Mantenimiento();
         $mantenimiento->propiedad_id = $request->propiedad_id;
+        $mantenimiento->descripcion = $request->descripcion;
+        $mantenimiento->fecha = $request->fecha;
+        $mantenimiento->costo = $request->costo;
+    
         // Agrega aquí el resto de los campos del mantenimiento
         $mantenimiento->save();
         return response()->json(['mantenimiento' => $mantenimiento]);

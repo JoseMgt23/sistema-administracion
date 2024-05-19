@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ContratoController;
+use App\Http\Controllers\Api\ArrendatarioController;
 use App\Http\Controllers\Api\MantenimientoController;
 use App\Http\Controllers\Api\PagoController;
 use App\Http\Controllers\api\PropiedadController;
