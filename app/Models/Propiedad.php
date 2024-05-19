@@ -11,7 +11,7 @@ class Propiedad extends Model
     // Definición de la relación uno a uno con Contrato para obtener el contrato actual
     public function contratoActual()
     {
-        return $this->hasOne(Contrato::class)->where('estado', 'activo');
+        return $this->hasOne(Contrato::class);
     }
 
     // Definición de la relación uno a muchos con Contratos

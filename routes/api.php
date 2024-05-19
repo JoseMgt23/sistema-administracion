@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ContratoController;
 use App\Http\Controllers\Api\MantenimientoController;
 use App\Http\Controllers\Api\PagoController;
+use App\Http\Controllers\api\PropiedadController;
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
 {

@@ -1,21 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pago;
+use App\Models\Arrendatario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
-class PagoController extends Controller
+class ArrendatarioController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $pagos = Pago::all();
-        return response()->json(['pagos' => $pagos]);
+        $arrendatarios = Arrendatario::all();
+        return response()->json(['arrendatarios' => $arrendatarios]);
     }
 
     /**
@@ -23,28 +22,11 @@ class PagoController extends Controller
      */
     public function store(Request $request)
     {
-        $validate = Validator::make($request->all(), [
-            'contrato_id' => ['required', 'exists:contratos,id'],
-            'fecha_pago' => ['required', 'date'],
-            'monto' => ['required', 'numeric'],
-            'estado' => ['required', 'in:pendiente,completado'],
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json([
-                'msg' => 'Se produjo un error en la validación de la información',
-                'statusCode' => 400
-            ], 400);
-        }
-
-        $pago = new Pago();
-        $pago->contrato_id = $request->contrato_id;
-        $pago->fecha_pago = $request->fecha_pago;
-        $pago->monto = $request->monto;
-        $pago->estado = $request->estado;
-        $pago->save();
-
-        return response()->json(['pago' => $pago], 201);
+        $arrendatario = new Arrendatario();
+        $arrendatario->nombre = $request->nombre;
+        // Agrega aquí el resto de los campos del arrendatario
+        $arrendatario->save();
+        return response()->json(['arrendatario' => $arrendatario]);
     }
 
     /**
@@ -52,11 +34,8 @@ class PagoController extends Controller
      */
     public function show(string $id)
     {
-        $pago = Pago::find($id);
-        if (is_null($pago)) {
-            return response()->json(['msg' => 'Pago no encontrado'], 404);
-        }
-        return response()->json(['pago' => $pago]);
+        $arrendatario = Arrendatario::find($id);
+        return response()->json(['arrendatario' => $arrendatario]);
     }
 
     /**
@@ -64,32 +43,11 @@ class PagoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $pago = Pago::find($id);
-        if (is_null($pago)) {
-            return response()->json(['msg' => 'Pago no encontrado'], 404);
-        }
+        $arrendatario = Arrendatario::find($id);
+        // Actualiza aquí los campos del arrendatario según lo necesario
+        $arrendatario->save();
 
-        $validate = Validator::make($request->all(), [
-            'contrato_id' => ['required', 'exists:contratos,id'],
-            'fecha_pago' => ['required', 'date'],
-            'monto' => ['required', 'numeric'],
-            'estado' => ['required', 'in:pendiente,completado'],
-        ]);
-
-        if ($validate->fails()) {
-            return response()->json([
-                'msg' => 'Se produjo un error en la validación de la información',
-                'statusCode' => 400
-            ], 400);
-        }
-
-        $pago->contrato_id = $request->contrato_id;
-        $pago->fecha_pago = $request->fecha_pago;
-        $pago->monto = $request->monto;
-        $pago->estado = $request->estado;
-        $pago->save();
-
-        return response()->json(['pago' => $pago]);
+        return response()->json(['arrendatario' => $arrendatario]);
     }
 
     /**
@@ -97,11 +55,9 @@ class PagoController extends Controller
      */
     public function destroy(string $id)
     {
-        $pago = Pago::find($id);
-        if (is_null($pago)) {
-            return response()->json(['msg' => 'Pago no encontrado'], 404);
-        }
-        $pago->delete();
-        return response()->json(['msg' => 'Pago eliminado exitosamente']);
+        $arrendatario = Arrendatario::find($id);
+        $arrendatario->delete();
+        $arrendatarios = Arrendatario::all();
+        return response()->json(['arrendatarios' => $arrendatarios, 'success' => true]);
     }
 }

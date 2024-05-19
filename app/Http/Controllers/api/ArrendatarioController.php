@@ -5,7 +5,6 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Arrendatario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ArrendatarioController extends Controller
 {
@@ -23,29 +22,11 @@ class ArrendatarioController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
-            'apellido' => 'required|max:255',
-            'telefono' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:arrendatarios',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'msg' => 'Se produjo un error en la validación de la información',
-                'statusCode' => 400,
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
         $arrendatario = new Arrendatario();
         $arrendatario->nombre = $request->nombre;
-        $arrendatario->apellido = $request->apellido;
-        $arrendatario->telefono = $request->telefono;
-        $arrendatario->email = $request->email;
+        // Agrega aquí el resto de los campos del arrendatario
         $arrendatario->save();
-
-        return response()->json(['arrendatario' => $arrendatario], 201);
+        return response()->json(['arrendatario' => $arrendatario]);
     }
 
     /**
@@ -54,9 +35,6 @@ class ArrendatarioController extends Controller
     public function show(string $id)
     {
         $arrendatario = Arrendatario::find($id);
-        if (is_null($arrendatario)) {
-            return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
-        }
         return response()->json(['arrendatario' => $arrendatario]);
     }
 
@@ -66,29 +44,7 @@ class ArrendatarioController extends Controller
     public function update(Request $request, string $id)
     {
         $arrendatario = Arrendatario::find($id);
-        if (is_null($arrendatario)) {
-            return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
-        }
-
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|max:255',
-            'apellido' => 'required|max:255',
-            'telefono' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:arrendatarios,email,' . $id,
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'msg' => 'Se produjo un error en la validación de la información',
-                'statusCode' => 400,
-                'errors' => $validator->errors()
-            ], 400);
-        }
-
-        $arrendatario->nombre = $request->nombre;
-        $arrendatario->apellido = $request->apellido;
-        $arrendatario->telefono = $request->telefono;
-        $arrendatario->email = $request->email;
+        // Actualiza aquí los campos del arrendatario según lo necesario
         $arrendatario->save();
 
         return response()->json(['arrendatario' => $arrendatario]);
@@ -100,10 +56,8 @@ class ArrendatarioController extends Controller
     public function destroy(string $id)
     {
         $arrendatario = Arrendatario::find($id);
-        if (is_null($arrendatario)) {
-            return response()->json(['msg' => 'Arrendatario no encontrado'], 404);
-        }
         $arrendatario->delete();
-        return response()->json(['msg' => 'Arrendatario eliminado exitosamente']);
+        $arrendatarios = Arrendatario::all();
+        return response()->json(['arrendatarios' => $arrendatarios, 'success' => true]);
     }
 }
