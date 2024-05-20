@@ -23,7 +23,11 @@ class ContratoController extends Controller
     public function store(Request $request)
     {
         $contrato = new Contrato();
+        $contrato->arrendatario_id = $request->arrendatario_id;
         $contrato->propiedad_id = $request->propiedad_id;
+        $contrato->fecha_inicio = $request->fecha_inicio;
+        $contrato->fecha_fin = $request->fecha_fin;
+        $contrato->renta_mensual = $request->renta_mensual; 
         // Añade aquí el resto de los campos del contrato
         $contrato->save();
         return response()->json(['contrato' => $contrato]);

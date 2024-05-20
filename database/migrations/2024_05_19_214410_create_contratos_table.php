@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contratos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('propiedad_id');
-            $table->foreign('propiedad_id')->references('id')->on('propiedades')->onDelete('cascade');
+            $table->foreign('propiedad_id')->references('id')->on('propiedads')->onDelete('cascade');
             $table->unsignedBigInteger('arrendatario_id');
             $table->foreign('arrendatario_id')->references('id')->on('arrendatarios')->onDelete('cascade');
             $table->date('fecha_inicio');

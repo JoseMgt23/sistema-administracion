@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mantenimientos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('propiedad_id');
-            $table->foreign('propiedad_id')->references('id')->on('propiedades')->onDelete('cascade');
+            $table->foreign('propiedad_id')->references('id')->on('propiedads')->onDelete('cascade');
             $table->text('descripcion');
             $table->date('fecha');
             $table->bigInteger('costo');
